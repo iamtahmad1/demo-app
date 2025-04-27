@@ -50,10 +50,16 @@ jobs:
         docker push ghcr.io/${{ github.repository_owner }}/demo-app:${GITHUB_SHA}
         docker push ghcr.io/${{ github.repository_owner }}/demo-app:latest
 
-    - name: Set up SonarQube Scanner
-      uses: SonarSource/sonarcloud-github-action@v1
+    - name: Set up SonarCloud Scanner
+      uses: sonarsource/sonarcloud-github-action@v1.0.0
       with:
-        token: ${{ secrets.SONAR_TOKEN }}
+        # Specify your SonarCloud project settings here
+        args: >
+          -Dsonar.projectKey=${{ github.repository }}
+          -Dsonar.organization=${{ secrets.SONAR_ORG }}
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
     - name: Run SonarQube Scan
       run: |
