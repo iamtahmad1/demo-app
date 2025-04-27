@@ -1,0 +1,65 @@
+name: CI Build Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-
+
+    - name: Install Dependencies
+      run: npm install --frozen-lockfile
+
+    - name: Run Lint
+      run: npm run lint
+
+    - name: Build Docker Image
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/demo-app:${GITHUB_SHA} .
+        docker tag ghcr.io/${{ github.repository_owner }}/demo-app:${GITHUB_SHA} ghcr.io/${{ github.repository_owner }}/demo-app:latest
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push Docker Image to GHCR
+      run: |
+        docker push ghcr.io/${{ github.repository_owner }}/demo-app:${GITHUB_SHA}
+        docker push ghcr.io/${{ github.repository_owner }}/demo-app:latest
+
+    - name: Set up SonarQube Scanner
+      uses: SonarSource/sonarcloud-github-action@v1
+      with:
+        token: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Run SonarQube Scan
+      run: |
+        sonar-scanner
+
+    # - name: Notify Team (Optional)
+    #   if: success()
+    #   run: |
+    #     curl -X POST -H 'Content-type: application/json' --data '{"text":"CI build successful! Image tagged and pushed to GHCR."}' https://hooks.slack.com/services/${{ secrets.SLACK_WEBHOOK }}
