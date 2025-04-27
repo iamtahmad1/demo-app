@@ -14,15 +14,14 @@ jobs:
       packages: write
       
     steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
     - name: Generate Semantic Version
       id: version
       run: |
         TAG=$(git describe --tags --abbrev=7 --always)
         echo "VERSION=$TAG" >> $GITHUB_ENV
-
-
-    - name: Checkout Code
-      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
