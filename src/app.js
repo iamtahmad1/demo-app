@@ -1,8 +1,8 @@
 // src/app.js
 
-import express from 'express';
-import { config } from './config.js';   // Import configuration
-import hostRoutes from './routes/hostRoutes.js';  // Import host routes
+import express from "express";
+import { config } from "./config.js"; // Import configuration
+import hostRoutes from "./routes/hostRoutes.js"; // Import host routes
 
 const app = express();
 
@@ -10,11 +10,11 @@ const app = express();
 app.use(express.json());
 
 // Register routes
-app.use('/', hostRoutes);
+app.use("/", hostRoutes);
 
 // Start the server
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
 });
 
-export default app;  // Export for testing purposes
+export default app; // Export for testing purposes

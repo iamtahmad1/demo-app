@@ -1,6 +1,6 @@
 // src/utils/getHostInfo.js
 
-import os from 'os';
+import os from "os";
 
 export const getHostInfo = () => {
   return {

@@ -1,6 +1,6 @@
 // src/controllers/hostController.js
 
-import os from 'os';
+import os from "os";
 
 export const getHostInfo = (req, res) => {
   try {
@@ -12,8 +12,8 @@ export const getHostInfo = (req, res) => {
       totalMemory: os.totalmem(),
       freeMemory: os.freemem(),
     };
-    res.json(hostInfo);  // Send host info as JSON response
+    res.json(hostInfo); // Send host info as JSON response
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch host information' });
+    res.status(500).json({ error: "Failed to fetch host information" });
   }
 };
