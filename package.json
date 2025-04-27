@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon app.js",
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --detectOpenHandles",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --forceExit --detectOpenHandles",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
