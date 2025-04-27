@@ -64,7 +64,9 @@ body {
 .envtable {
   max-height: 500px;
   overflow-y: scroll;
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
+  font-family:
+    "Lucida Console", "Lucida Sans Typewriter", monaco,
+    "Bitstream Vera Sans Mono", monospace;
 
   background-color: #222222;
 }
